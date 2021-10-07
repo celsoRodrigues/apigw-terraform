@@ -9,11 +9,7 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-// PostInput the post input
-type PostInput struct {
-	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
-}
+
 
 func handleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 
@@ -22,20 +18,8 @@ func handleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (
 	fmt.Printf("event.QueryStringParameters %v\n", request.QueryStringParameters)
 	fmt.Printf("event %v\n", request)
 
-	firstName := ""
-	lastName := ""
 
-	if request.HTTPMethod == "GET" {
-		firstName = request.QueryStringParameters["firstName"]
-		lastName = request.QueryStringParameters["lastName"]
-	} else if request.HTTPMethod == "POST" {
-		postInput := &PostInput{}
-		json.Unmarshal([]byte(request.Body), postInput)
-		firstName = postInput.FirstName
-		lastName = postInput.LastName
-	}
-
-	body := fmt.Sprintf("{\"message\": \"Hello from lambda\", \"name\": \"%s %s\"}", firstName, lastName)
+	body := fmt.Sprintf("{\"message\": \"Hello from lambda\" }")
 
 	return events.APIGatewayProxyResponse{
 		Body:       body,
